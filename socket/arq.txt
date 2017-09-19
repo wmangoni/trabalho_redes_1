@@ -1,0 +1,3 @@
+Inicio do arquivo.
+Conteudo do meu arquivo.
+Fim do arquivo.

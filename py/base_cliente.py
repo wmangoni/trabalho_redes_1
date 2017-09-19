@@ -16,7 +16,10 @@ serverHost = 'localhost'
 serverPort = 50007
 
 # Menssagem a ser mandada condificada em bytes
-menssagem = [b'Ola mundo da internet!']
+arq = open('arq.txt', 'w')
+menssagem = arq.read();
+arq.close()
+
 
 # Criamos o socket e o conectamos ao servidor
 sockobj = socket(AF_INET, SOCK_STREAM)
