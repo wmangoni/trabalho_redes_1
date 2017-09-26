@@ -29,14 +29,11 @@ do {
         break;
     }
     /* Send instructions. */
-	$arquivo = fopen("arq.txt", "r");
+	$arquivo = file("c:\\xampp\\htdocs\\trabalho_redes_1\\arq.txt");
 	$msg = "";
-	
-	while(!feof($arquivo)) {
-		$msg .= fgets($arquivo, 1024) . "\n";
+	foreach($arquivo as $k => $v) {
+		$msg .= $v;
 	}
-
-	fclose($arquivo);
 	
     socket_write($msgsock, $msg, strlen($msg));
 
@@ -55,9 +52,9 @@ do {
             socket_close($msgsock);
             break 2;
         }
-        $talkback = "PHP: You said '$buf'.\n";
-        socket_write($msgsock, $talkback, strlen($talkback));
-        echo "$buf\n";
+        //$talkback = "PHP: You said '$buf'.\n";
+        //socket_write($msgsock, $talkback, strlen($talkback));
+        //echo "$buf\n";
     } while (true);
     socket_close($msgsock);
 } while (true);
