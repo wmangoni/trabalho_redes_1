@@ -5,13 +5,15 @@ class MySocket {
 
     private $address = '127.0.0.1';
 
-    private $port = 8081;
+    private $port = 10084;
 
     private $sock;
 
     private $msgsock;
 
     private $arq = "";
+
+    private $buf = " null ";
 
     /************
     *
@@ -44,12 +46,26 @@ class MySocket {
             break;
         }
 
-        //aqui eu lia o arquivo
-        $msg = "init";
-
         do {
 
-            socket_write($this->msgsock, $msg, strlen($msg));
+            $get = explode(' ', $this->buf);
+            $arquivo = '\arq';
+            //echo '<pre>';
+            //var_dump($get);
+
+            foreach ($get as $k => $v) {
+                if (substr($v, 0,1) == '/' and strlen($v) > 2) {
+                    $arquivo = $v;
+                    break;
+                }
+            }
+
+            $file = file("c:\\xampp\\htdocs\\trabalho_redes_1{$arquivo}.txt");
+            foreach($file as $k => $v) {
+                $this->arq .= $v;
+            }
+
+            socket_write($this->msgsock, $this->arq, strlen($this->arq));
 
             do {
 
@@ -68,35 +84,12 @@ class MySocket {
                     socket_close($this->msgsock);
                     break 2;
                 }
-
-                $get = explode(' ', $this->buf);
-                //echo '<pre>';
-                //var_dump($get);
-
-                foreach ($get as $k => $v) {
-                    if (substr($v, 0,1) == '/') {
-                        echo $v;
-                        $this->arq = $v;
-                    }
-                }
-
-                if ($this->arq == "") {
-                    $arquivo = file("c:\\xampp\\htdocs\\trabalho_redes_1\\arq.txt");
-                    foreach($arquivo as $k => $v) {
-                        $msg .= $v;
-                    }
-                } else {
-                    $arquivo = file("c:\\xampp\\htdocs\\trabalho_redes_1{$this->arq}.txt");
-                    foreach($arquivo as $k => $v) {
-                        $msg .= $v;
-                    }
-                }
                 
                 //$talkback = "PHP: You said '$this->buf'.\n";
                 //socket_write($this->msgsock, $talkback, strlen($talkback));
                 //echo "$this->buf\n";
 
-            } while ($this->arq == "");
+            } while (true);
 
             socket_close($this->msgsock);
 
