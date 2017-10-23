@@ -13,8 +13,5 @@ include_once "MySocket.php";
 
 use System\MySocket;
 
-
-var_dump($_POST);
-
 $socket = new MySocket();
 $socket->rum();
